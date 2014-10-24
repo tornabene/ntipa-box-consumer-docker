@@ -23,7 +23,7 @@ RUN apt-get -y install tesseract-ocr-eng
 RUN apt-get -y install libhocr0
 RUN apt-get -y install ruby
 RUN apt-get -y install libreoffice
-
+RUN apt-get install -yqq inetutils-ping
 
 # install oracle java from PPA
 RUN add-apt-repository ppa:webupd8team/java -y
@@ -50,25 +50,26 @@ RUN ln -s /tmp/pdfocr/pdfocr.rb /usr/bin/pdfocr
  
 ADD unoconvd.sh /etc/init.d/unoconvd.sh
 RUN chmod 755 /etc/init.d/unoconvd.sh
-RUN update-rc.d  unoconvd.sh defaults
-RUN service unoconvd.sh start
+#RUN update-rc.d  unoconvd.sh defaults
+#RUN service unoconvd.sh start
 
 
 WORKDIR /etc/supervisor/conf.d
 ADD ntipaboxconsumer.conf  /etc/supervisor/conf.d/ntipaboxconsumer.conf
+RUN mkdir -p   /var/run/sshd /var/log/supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR /opt
 RUN mkdir devpublic
 WORKDIR /opt/devpublic
-#ADD ntipa-box-consumer-0.0.1-SNAPSHOT.war /opt/devpublic/ntipa-box-consumer-0.0.1-SNAPSHOT.war
-
 
 # configure the "ntipa" and "root" users
 RUN echo 'root:ntipa' |chpasswd
 RUN groupadd ntipa && useradd ntipa -s /bin/bash -m -g ntipa -G ntipa && adduser ntipa sudo
-RUN echo 'ntipa:ntipa' |chpasswd
+RUN echo 'ntipa:ntipa' |chpasswd	
 
 # expose the SSHD port, and run SSHD
 EXPOSE 22
 EXPOSE 8080
-CMD    /usr/sbin/sshd -D
+EXPOSE 8000
+CMD ["/usr/bin/supervisord"]
