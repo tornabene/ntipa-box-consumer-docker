@@ -3,7 +3,6 @@ FROM      ubuntu:12.04
 MAINTAINER Tindaro Tornabene <tindaro.tornabene@gmail.com>
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN apt-get -y dist-upgrade
 
 RUN apt-get -y -q  install  python-software-properties software-properties-common
 RUN apt-get -y install openssh-server && mkdir /var/run/sshd
@@ -39,8 +38,6 @@ WORKDIR /opt
 
 RUN git clone https://github.com/dagwieers/unoconv 
 WORKDIR unoconv
-RUN pwd
-RUN ls
 RUN make install
 
 RUN git clone https://github.com/gkovacs/pdfocr.git
@@ -48,8 +45,8 @@ WORKDIR pdfocr
 RUN ln -s /tmp/pdfocr/pdfocr.rb /usr/bin/pdfocr
 
  
-ADD unoconvd.sh /etc/init.d/unoconvd.sh
-RUN chmod 755 /etc/init.d/unoconvd.sh
+#ADD unoconvd.sh /etc/init.d/unoconvd.sh
+#RUN chmod 755 /etc/init.d/unoconvd.sh
 #RUN update-rc.d  unoconvd.sh defaults
 #RUN service unoconvd.sh start
 
@@ -62,7 +59,7 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 WORKDIR /opt
 RUN mkdir devpublic
 WORKDIR /opt/devpublic
-RUN wget http://tweb2.ipublic.it/nexus/service/local/repositories/ipublic/content/snapshots/com/ipublic/ntipa/ntipa-box-consumer/0.0.1-SNAPSHOT/ntipa-box-consumer-0.0.1-20141023.090124-4.war -O /opt/devpublic/ntipa-box-consumer-0.0.1-SNAPSHOT.war
+#RUN wget http://tweb2.ipublic.it/nexus/service/local/repositories/ipublic/content/snapshots/com/ipublic/ntipa/ntipa-box-consumer/0.0.1-SNAPSHOT/ntipa-box-consumer-0.0.1-20141023.090124-4.war -O /opt/devpublic/ntipa-box-consumer-0.0.1-SNAPSHOT.war
 # configure the "ntipa" and "root" users
 RUN echo 'root:ntipa' |chpasswd
 RUN groupadd ntipa && useradd ntipa -s /bin/bash -m -g ntipa -G ntipa && adduser ntipa sudo
