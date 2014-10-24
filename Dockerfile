@@ -62,8 +62,7 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 WORKDIR /opt
 RUN mkdir devpublic
 WORKDIR /opt/devpublic
-RUN wget http://10.10.130.14:8081/nexus/service/local/repositories/ipublic/content/snapshots/com/ipublic/ntipa/ntipa-box-consumer/0.0.1-SNAPSHOT/ntipa-box-consumer-0.0.1-20141023.090124-4.war -O ntipa-box-consumer-0.0.1-SNAPSHOT.war
-
+RUN wget http://tweb2.ipublic.it/nexus/service/local/repositories/ipublic/content/snapshots/com/ipublic/ntipa/ntipa-box-consumer/0.0.1-SNAPSHOT/ntipa-box-consumer-0.0.1-20141023.090124-4.war -O /opt/devpublic/ntipa-box-consumer-0.0.1-SNAPSHOT.war
 # configure the "ntipa" and "root" users
 RUN echo 'root:ntipa' |chpasswd
 RUN groupadd ntipa && useradd ntipa -s /bin/bash -m -g ntipa -G ntipa && adduser ntipa sudo
@@ -72,5 +71,5 @@ RUN echo 'ntipa:ntipa' |chpasswd
 # expose the SSHD port, and run SSHD
 EXPOSE 22
 EXPOSE 8080
-EXPOSE 8000
+EXPOSE 2002
 CMD ["/usr/bin/supervisord"]
