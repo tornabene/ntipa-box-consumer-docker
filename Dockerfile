@@ -23,7 +23,7 @@ RUN apt-get -y install tesseract-ocr-eng
 RUN apt-get -y install libhocr0
 RUN apt-get -y install ruby
 RUN apt-get -y install libreoffice
-RUN apt-get install -yqq inetutils-ping
+RUN apt-get install -yqq inetutils-ping net-tools
 
 # install oracle java from PPA
 RUN add-apt-repository ppa:webupd8team/java -y
@@ -62,6 +62,7 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 WORKDIR /opt
 RUN mkdir devpublic
 WORKDIR /opt/devpublic
+RUN wget http://10.10.130.14:8081/nexus/service/local/repositories/ipublic/content/snapshots/com/ipublic/ntipa/ntipa-box-consumer/0.0.1-SNAPSHOT/ntipa-box-consumer-0.0.1-20141023.090124-4.war -O ntipa-box-consumer-0.0.1-SNAPSHOT.war
 
 # configure the "ntipa" and "root" users
 RUN echo 'root:ntipa' |chpasswd
