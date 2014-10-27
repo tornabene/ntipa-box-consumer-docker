@@ -18,7 +18,6 @@ RUN apt-get -y install autoconf automake libtool
 RUN apt-get -y install libjpeg62-dev
 RUN apt-get -y install libtiff4
 RUN apt-get -y install tesseract-ocr-ita
-RUN apt-get -y install tesseract-ocr-eng
 RUN apt-get -y install libhocr0
 RUN apt-get -y install ruby
 RUN apt-get -y install libreoffice
