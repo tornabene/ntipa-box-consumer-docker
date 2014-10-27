@@ -59,10 +59,14 @@ WORKDIR /opt
 RUN mkdir devpublic
 WORKDIR /opt/devpublic
 RUN wget http://tweb2.ipublic.it/nexus/service/local/repositories/ipublic/content/snapshots/com/ipublic/ntipa/ntipa-box-consumer/0.0.1-SNAPSHOT/ntipa-box-consumer-0.0.1-20141023.090124-4.war -O /opt/devpublic/ntipa-box-consumer-0.0.1-SNAPSHOT.war
+
 # configure the "ntipa" and "root" users
 RUN echo 'root:ntipa' |chpasswd
 RUN groupadd ntipa && useradd ntipa -s /bin/bash -m -g ntipa -G ntipa && adduser ntipa sudo
 RUN echo 'ntipa:ntipa' |chpasswd	
+RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
 
 # expose the SSHD port, and run SSHD
 EXPOSE 22
