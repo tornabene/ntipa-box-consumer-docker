@@ -44,12 +44,6 @@ WORKDIR pdfocr
 RUN ln -s /tmp/pdfocr/pdfocr.rb /usr/bin/pdfocr
 
  
-#ADD unoconvd.sh /etc/init.d/unoconvd.sh
-#RUN chmod 755 /etc/init.d/unoconvd.sh
-#RUN update-rc.d  unoconvd.sh defaults
-#RUN service unoconvd.sh start
-
-
 WORKDIR /etc/supervisor/conf.d
 ADD ntipaboxconsumer.conf  /etc/supervisor/conf.d/ntipaboxconsumer.conf
 RUN mkdir -p   /var/run/sshd /var/log/supervisor
